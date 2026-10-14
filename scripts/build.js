@@ -48,8 +48,9 @@ const meta = { run, title: page.meta.title, url: page.meta.url };
 
 // ---------- payload: full tree, drawn in one pass by wrDrawAll (see carrier.js) ----------
 if (mode === 'payload') {
+  // No process.exit here: it would drop whatever is still buffered for a pipe (>64KB payloads).
   process.stdout.write(JSON.stringify({ ...meta, tokens: { colors, text }, tree: page.root }));
-  process.exit(0);
+  return;
 }
 
 // ---------- chunk planning ----------

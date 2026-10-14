@@ -17,7 +17,10 @@ if (!input || (!submitUrl && !outFile)) { console.error('usage: carrier.js <page
 const CHUNK = 4000; // characters of base64 per layer name
 const payload = execFileSync(process.execPath, [path.join(__dirname, 'build.js'), input, '--payload'], { encoding: 'utf8', maxBuffer: 64 << 20 });
 const runtime = fs.readFileSync(path.join(__dirname, 'figma-runtime.js'), 'utf8');
+try { JSON.parse(payload); } catch (e) { console.error(`payload is not valid JSON (${payload.length} chars): ${e.message}`); process.exit(1); }
 const src = `const DATA = ${payload};\n${runtime}\nreturn await wrDrawAll();\n`;
+// Same wrapping as figma/bootstrap.js — fail here instead of inside Figma.
+try { new Function('figma', `return (async () => {\n${src}\n})()`); } catch (e) { console.error(`carrier source does not parse: ${e.message}`); process.exit(1); }
 
 const b64 = Buffer.from(src, 'utf8').toString('base64');
 const parts = b64.match(new RegExp(`.{1,${CHUNK}}`, 'g'));

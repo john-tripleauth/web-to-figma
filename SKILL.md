@@ -91,6 +91,7 @@ node <skill>/scripts/capture.js extract [--no-scroll]
 출력 예시: `{"ok":true,"file":"~/.web-to-figma/pages/<host>/<ts>.json","nodes":317,...}`. 이후 단계에서는 이 `file` 경로를 쓴다.
 - 페이지를 한 번 스크롤해서 지연 로딩되는 콘텐츠를 띄운 뒤 맨 위로 돌아가 추출한다.
 - 모달처럼 스크롤하면 닫히는 화면 상태를 유지해야 하면 `--no-scroll`을 쓴다.
+- 결과의 `url`이 요청한 URL과 다르면(예: 로그인 후 다른 화면으로 이동함), 그리기 전에 사용자에게 알린다. 그리고 `open --url <원래 URL>`로 다시 연 뒤 추출한다. 저장된 로그인 덕분에 이번에는 창 없이 열린다.
 - `ok:false`면 `error`를 사용자에게 보여준다. 예: 브라우저가 열려 있지 않음 → 2단계로 돌아간다.
 
 ## 4. Figma에 그리기 (Figma MCP 업로드 방식, 기본)
@@ -109,7 +110,8 @@ node <skill>/scripts/capture.js extract [--no-scroll]
 
 ### 실패했을 때
 
-- **`new Function`/`eval`이 막혔거나, carrier를 찾지 못하거나, 레이어 이름이 잘린 경우**: use_figma에 직접 입력하는 방식으로 넘어간다. 느리다(수 분). 시작하기 전에 사용자에게 알린다.
+- **`carrier.js`가 실패하면**(payload/source 검증 오류): 스크립트 버그다. fallback으로 넘어가지 말고 오류를 그대로 사용자에게 보여준다. `carrier.js`는 업로드 전에 데이터와 코드를 검증하므로, 업로드에 성공했다면 데이터는 온전하다.
+- **업로드는 됐는데 부트스트랩이 실패하면**(`new Function`/`eval` 차단, carrier를 찾지 못함 등): 원인을 추측하지 말고 오류 메시지를 그대로 사용자에게 보여준다. 그다음 use_figma에 직접 입력하는 방식으로 넘어간다. 느리다(수 분). 시작하기 전에 사용자에게 알린다.
   ```bash
   node <skill>/scripts/build.js <file> --scripts ~/.web-to-figma/figma-scripts
   ```
