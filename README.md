@@ -57,6 +57,7 @@ scripts/
   preflight.js           설치 점검
   state.js               ~/.web-to-figma 기록·보관
   capture.js             agent-browser 제어 (open / extract, 로그인 감지)
+  expand.js              페이지 안에서 실행: 스크롤 영역을 끝까지 불러오고 한 페이지로 펼침
   extract.js             페이지 안에서 실행: DOM → Figma 구조 JSON
   figma-runtime.js       Figma 렌더러 (모든 그리기 경로가 공유)
   carrier.js             렌더러+데이터를 SVG로 묶어 Figma MCP로 업로드
@@ -66,6 +67,7 @@ figma/bootstrap.js       use_figma로 보내는 고정 부트스트랩
 
 ## 제한
 
+- 기본값은 **페이지 전체**입니다. 문서와 안쪽 스크롤 영역을 끝까지 스크롤해서 지연 로딩 콘텐츠까지 불러온 뒤, 한 장의 긴 페이지로 펼쳐서 옮깁니다. 무한 스크롤은 영역마다 30000px에서 멈춥니다. 화면에 보이는 항목만 렌더링하는 가상화 목록(virtualized list)은 펼쳐도 일부만 남을 수 있습니다.
 - 이미지, SVG 아이콘, 비디오, 캔버스는 옮기지 않습니다. 아이콘이 있던 자리에는 배경 박스만 남습니다.
 - 폰트는 Inter로 통일됩니다. 원래 폰트와 글자 폭이 달라서, 줄바꿈 위치가 원본과 다를 수 있습니다.
 - 브라우저는 agent-browser만 지원합니다. Orca, Claude 데스크톱 내장 브라우저, Codex 인앱 브라우저는 1440px 폭을 맞출 수 없거나 비효율적이라 지원하지 않습니다.

@@ -85,12 +85,13 @@ node <skill>/scripts/capture.js open --url <url> [--login] [--width 1440 --heigh
 ## 3. 추출
 
 ```bash
-node <skill>/scripts/capture.js extract [--no-scroll]
+node <skill>/scripts/capture.js extract [--viewport-only]
 ```
 
-출력 예시: `{"ok":true,"file":"~/.web-to-figma/pages/<host>/<ts>.json","nodes":317,...}`. 이후 단계에서는 이 `file` 경로를 쓴다.
-- 페이지를 한 번 스크롤해서 지연 로딩되는 콘텐츠를 띄운 뒤 맨 위로 돌아가 추출한다.
-- 모달처럼 스크롤하면 닫히는 화면 상태를 유지해야 하면 `--no-scroll`을 쓴다.
+출력 예시: `{"ok":true,"file":"~/.web-to-figma/pages/<host>/<ts>.json","nodes":317,"page":{"w":1440,"h":4210},"expanded":{...}}`. 이후 단계에서는 이 `file` 경로를 쓴다.
+- 기본값은 **페이지 전체**를 옮기는 것이다. 문서와 안쪽 스크롤 영역(앱처럼 화면 높이가 고정되고 안쪽만 스크롤되는 레이아웃)을 끝까지 스크롤해서 지연 로딩 콘텐츠를 불러온다. 그런 다음 높이 제한을 풀어 한 장의 긴 페이지로 펼친 상태에서 추출하고, 끝나면 페이지를 원래대로 되돌린다.
+- `expanded.heightAfter`가 펼친 뒤의 높이다. 무한 스크롤은 영역마다 30000px에서 멈춘다.
+- 사용자가 "지금 보이는 화면만"을 원하거나, 모달처럼 스크롤하면 바뀌는 화면 상태를 유지해야 하면 `--viewport-only`를 쓴다.
 - 결과의 `url`이 요청한 URL과 다르면(예: 로그인 후 다른 화면으로 이동함), 그리기 전에 사용자에게 알린다. 그리고 `open --url <원래 URL>`로 다시 연 뒤 추출한다. 저장된 로그인 덕분에 이번에는 창 없이 열린다.
 - `ok:false`면 `error`를 사용자에게 보여준다. 예: 브라우저가 열려 있지 않음 → 2단계로 돌아간다.
 

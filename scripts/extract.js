@@ -315,7 +315,7 @@
       if (ch.length === 0) return [];
       if (ch.length === 1) return ch; // collapse wrapper
     }
-    if (ch.length === 0 && !paints) return [];
+    if (ch.length === 0 && (!paints || rect.width < 1 || rect.height < 1)) return []; // e.g. a 0% progress bar
     const node = { t: 'frame', n: nameOf(el), ...box(rect), ...v, ...(clip ? { clip: 1 } : {}) };
     if (rect.width < 1 || rect.height < 1) {
       // zero-size wrapper (e.g. absolute children): use union of children
