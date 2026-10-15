@@ -1,9 +1,13 @@
 ---
 name: web-to-figma
-description: 웹페이지(로그인이 필요한 페이지 포함)를 1440px 데스크톱 화면으로 읽어 HTML/CSS 요소를 Figma 프레임으로 옮긴다 — Auto Layout, 색상 Variables, 텍스트 스타일까지. "이 페이지 피그마로 그려줘", "웹 화면을 Figma로 옮겨줘", "사이트를 피그마 디자인으로", "현재 브라우저 화면 Figma에", "web to figma", "capture page into Figma" 같은 요청에 사용한다.
+description: 웹페이지(로그인이 필요한 페이지 포함)를 1440px 데스크톱 화면으로 읽어 HTML/CSS 요소를 Figma 프레임으로 옮긴다 — Auto Layout, 색상 Variables, 텍스트 스타일까지. "이 페이지 피그마로 그려줘", "웹 화면을 Figma로 옮겨줘", "사이트를 피그마 디자인으로", "현재 브라우저 화면 Figma에", "web to figma", "capture page into Figma" 같은 요청에 사용한다. "web-to-figma 업데이트해줘", "web-to-figma 버전 확인" 같은 스킬 업데이트·버전 요청에도 사용한다.
+metadata:
+  version: "0.4.0"
 ---
 
 # web-to-figma
+
+> **업데이트·버전 요청이면** 아래 워크플로를 실행하지 말고 맨 아래 [업데이트](#업데이트) 절만 따른다.
 
 웹페이지의 **HTML/CSS 박스만** Figma로 옮긴다: 배경, 그라디언트, 테두리, 그림자, 모서리, 텍스트, Auto Layout, 색상 Variables, 텍스트 스타일.
 옮기지 않는 것: `<img>`, `<svg>`, `<video>`, `<canvas>`, `background-image: url()`. 폰트는 Figma 기본 폰트(Inter)를 쓰고 굵기만 맞춘다.
@@ -132,3 +136,16 @@ node <skill>/scripts/state.js remember --url <url> --figma <figmaFileUrl> [--log
 
 - 데이터 구조: [`schema.md`](schema.md)
 - 지원하지 않는 브라우저: Orca, Claude 데스크톱 내장 브라우저, Codex 인앱 브라우저. 폭을 1440으로 맞출 수 없거나, 결과가 에이전트 컨텍스트를 거쳐야 한다.
+
+## 업데이트
+
+사용자가 "web-to-figma 업데이트해줘" 또는 "버전 확인"을 요청한 경우만 해당한다.
+
+1. 현재 버전: 이 파일 frontmatter의 `metadata.version`.
+2. 업데이트(`npx skills add`로 설치한 경우):
+   ```bash
+   npx -y skills update web-to-figma -g -y
+   ```
+   git clone이나 심볼릭 링크로 설치했다면 `git -C <skill> pull`을 쓴다.
+3. `<skill>/SKILL.md`를 다시 읽어 새 버전 번호를 확인하고, `<skill>/CHANGELOG.md`에서 이전 버전 이후의 변경 사항을 요약해 알린다.
+4. "새 버전은 **새 세션**에서 적용됩니다. 지금 세션은 이전 SKILL.md를 기억하고 있습니다"라고 안내한다.
